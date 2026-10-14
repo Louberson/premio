@@ -1,9 +1,10 @@
 <?php
-$host = "127.0.0.1";
-$port = "3307";
-$dbname = "premio";
-$user = "root";
-$password = "";
+$host = getenv("MYSQLHOST") ?: "127.0.0.1";
+$port = getenv("MYSQLPORT") ?: "3306";
+$dbname = getenv("MYSQL_DATABASE") ?: "premio";
+$user = getenv("MYSQLUSER") ?: "root";
+$password = getenv("MYSQLPASSWORD") ?: "";
+
 
 try {
     $conexion = new PDO(
@@ -17,6 +18,7 @@ try {
         ]
     );
 } catch (PDOException $e) {
+    error_log("Error de conexión PDO: " . $e->getMessage());
     http_response_code(500);
     die("Error de conexión con la base de datos.");
 }
